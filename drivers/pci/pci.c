@@ -336,7 +336,7 @@ __weak int pci_print_dev(struct pci_controller *hose, pci_dev_t dev)
 }
 #endif /* CONFIG_PCI_SCAN_SHOW */
 
-int pci_hose_scan_bus(struct pci_controller *hose, int bus)
+int pci_hose_scan_bus(struct pci_controller *hose, pci_dev_t parent, int bus)
 {
 	unsigned int sub_bus, found_multi = 0;
 	unsigned short vendor, device, class;
@@ -356,7 +356,7 @@ int pci_hose_scan_bus(struct pci_controller *hose, int bus)
 				PCI_MAX_PCI_FUNCTIONS - 1);
 	     dev += PCI_BDF(0, 0, 1)) {
 
-		if (pci_skip_dev(hose, dev))
+		if (pci_skip_dev(hose, parent, dev))
 			continue;
 
 		if (PCI_FUNC(dev) && !found_multi)
@@ -451,7 +451,7 @@ int pci_hose_scan(struct pci_controller *hose)
 #ifdef CONFIG_PCI_PNP
 	pciauto_config_init(hose);
 #endif
-	return pci_hose_scan_bus(hose, hose->current_busno);
+	return pci_hose_scan_bus(hose, 0xffffffff, hose->current_busno);
 }
 
 void pci_init(void)

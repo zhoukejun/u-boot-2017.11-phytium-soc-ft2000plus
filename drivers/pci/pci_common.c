@@ -79,6 +79,7 @@ const char *pci_class_str(u8 class)
 	};
 }
 
+#if 0
 __weak int pci_skip_dev(struct pci_controller *hose, pci_dev_t dev)
 {
 	/*
@@ -98,6 +99,7 @@ __weak int pci_skip_dev(struct pci_controller *hose, pci_dev_t dev)
 
 	return 0;
 }
+#endif
 
 #if !defined(CONFIG_DM_PCI) || defined(CONFIG_DM_PCI_COMPAT)
 /* Get a virtual address associated with a BAR region */
@@ -291,7 +293,7 @@ pci_dev_t pci_hose_find_devices(struct pci_controller *hose, int busnum,
 	for (bdf = PCI_BDF(busnum, 0, 0);
 	     bdf < PCI_BDF(busnum + 1, 0, 0);
 	     bdf += PCI_BDF(0, 0, 1)) {
-		if (pci_skip_dev(hose, bdf))
+		if (pci_skip_dev(hose, 0, bdf))
 			continue;
 
 		if (!PCI_FUNC(bdf)) {

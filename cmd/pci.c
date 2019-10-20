@@ -417,7 +417,7 @@ void pciinfo(int bus_num, int short_pci_listing)
 
 			dev = PCI_BDF(bus_num, device, function);
 
-			if (pci_skip_dev(hose, dev))
+			if (pci_skip_dev(hose, 0, dev))
 				continue;
 
 			ret = pci_read_config_word(dev, PCI_VENDOR_ID,

@@ -702,9 +702,9 @@ extern struct pci_controller* pci_bus_to_hose(int bus);
 extern struct pci_controller *find_hose_by_cfg_addr(void *cfg_addr);
 extern struct pci_controller *pci_get_hose_head(void);
 
-extern int pci_skip_dev(struct pci_controller *hose, pci_dev_t dev);
+extern int pci_skip_dev(struct pci_controller *hose, pci_dev_t parent, pci_dev_t dev);
 extern int pci_hose_scan(struct pci_controller *hose);
-extern int pci_hose_scan_bus(struct pci_controller *hose, int bus);
+extern int pci_hose_scan_bus(struct pci_controller *hose, pci_dev_t parent, int bus);
 
 extern void pciauto_setup_device(struct pci_controller *hose,
 				 pci_dev_t dev, int bars_num,

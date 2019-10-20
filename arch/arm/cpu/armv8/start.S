@@ -84,6 +84,7 @@ save_boot_params_ret:
 	mov	x0, #3 << 20
 	msr	cpacr_el1, x0			/* Enable FP/SIMD */
 0:
+	bl	_main
 
 	/*
 	 * Enable SMPEN bit for coherency.

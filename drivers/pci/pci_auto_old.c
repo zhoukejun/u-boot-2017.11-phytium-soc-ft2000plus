@@ -152,6 +152,7 @@ void pciauto_setup_device(struct pci_controller *hose,
 			      (unsigned int)bar_size);
 			if (pciauto_region_allocate(mem, bar_size,
 						    &bar_value) == 0) {
+				bar_value |= 1;
 				pci_hose_write_config_dword(hose, dev, rom_addr,
 							    bar_value);
 			}
@@ -284,6 +285,16 @@ void pciauto_postscan_setup_bridge(struct pci_controller *hose,
 					&prefechable_64);
 		prefechable_64 &= PCI_PREF_RANGE_TYPE_MASK;
 
+		u16 pref_base;
+		unsigned int pref_base_up32;
+		unsigned long limit;
+		pci_hose_read_config_word(hose, dev, PCI_PREF_MEMORY_BASE, &pref_base);
+		pci_hose_read_config_dword(hose, dev, PCI_PREF_BASE_UPPER32, &pref_base_up32);
+		limit = ((u64)pref_base_up32 << 32) | ((u64)pref_base << 16);
+		if(pci_prefetch->bus_lower <= limit) {
+			pci_prefetch->bus_lower = pci_prefetch->bus_lower + 0x100000;
+		}
+
 		/* Round memory allocator to 1MB boundary */
 		pciauto_region_align(pci_prefetch, 0x100000);
 
@@ -347,7 +358,7 @@ int pciauto_config_device(struct pci_controller *hose, pci_dev_t dev)
 		 * need to figure out if this is a subordinate bridge on the bus
 		 * to be able to properly set the pri/sec/sub bridge registers.
 		 */
-		n = pci_hose_scan_bus(hose, hose->current_busno);
+		n = pci_hose_scan_bus(hose, dev, hose->current_busno);
 
 		/* figure out the deepest we've gone for this leg */
 		sub_bus = max((unsigned int)n, sub_bus);

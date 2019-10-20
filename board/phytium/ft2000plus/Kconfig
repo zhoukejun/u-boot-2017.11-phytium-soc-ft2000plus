@@ -1,0 +1,15 @@
+if TARGET_FT2000PLUS
+
+config SYS_BOARD
+	default "ft2000plus"
+
+config SYS_VENDOR
+	default "phytium"
+
+config SYS_SOC
+	default "ft2000plus"
+
+config SYS_CONFIG_NAME
+	default "ft2000plus"
+
+endif

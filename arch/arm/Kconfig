@@ -1131,6 +1131,10 @@ config ARCH_ASPEED
 	select OF_CONTROL
 	select DM
 
+config TARGET_FT2000PLUS
+	bool "Support ft2000plus Socs"
+	select ARM64
+
 endchoice
 
 source "arch/arm/mach-aspeed/Kconfig"
@@ -1273,6 +1277,7 @@ source "board/vscom/baltos/Kconfig"
 source "board/woodburn/Kconfig"
 source "board/work-microwave/work_92105/Kconfig"
 source "board/zipitz2/Kconfig"
+source "board/phytium/ft2000plus/Kconfig"
 
 source "arch/arm/Kconfig.debug"
 
